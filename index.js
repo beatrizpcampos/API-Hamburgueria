@@ -1,8 +1,10 @@
 const express = require('express')
-const port = 3000
+const port = 3001
 const app = express()
 const uuid = require('uuid')
+const cors = require('cors');
 app.use(express.json())
+app.use(cors())
 
 const orders = []
 
@@ -32,8 +34,8 @@ app.get('/orders', (request, response) => {
 })
 
 app.post('/orders',methodAndUrl, (request, response) => {
-    const {order, clientName, price, status} = request.body
-    const newOrder = { id: uuid.v4(), order, clientName, price, status}
+    const {pedido, nome, valor, status} = request.body
+    const newOrder = { id: uuid.v4(), pedido, nome, valor, status}
 
     orders.push(newOrder)
 
@@ -41,10 +43,10 @@ app.post('/orders',methodAndUrl, (request, response) => {
 })
 
 app.put('/orders/:id',methodAndUrl, checkUserId, (request, response) => {
-    const {order, clientName, price, status} = request.body
+    const {pedido, nome, valor, status} = request.body
     const index = request.orderIndex
     const id = request.orderId
-    const updateOrder = { id, order, clientName, price, status }
+    const updateOrder = { id, pedido, nome, valor, status }
 
     orders[index] = updateOrder
 
@@ -60,10 +62,10 @@ app.delete('/orders/:id',methodAndUrl, checkUserId, (request, response) => {
 })
 
 app.patch('/orders/:id',methodAndUrl, checkUserId, (request, response) => {
-    const {order, clientName, price,status} = request.body
+    const {pedido, nome, valor,status} = request.body
     const index = request.orderIndex
     const id = request.orderId
-    const updateOrder = { id, order, clientName, price, status }
+    const updateOrder = { id, pedido, nome, valor, status }
 
     orders[index] = updateOrder
     return response.json(updateOrder)
